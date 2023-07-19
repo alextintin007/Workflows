@@ -1,0 +1,27 @@
+version: 0.6.0
+inputs:
+  directories:
+    - data
+    - code
+workflow:
+  type: serial
+  specification:
+    steps:
+      - name: test
+        environment: "rootproject/root:latest"
+        commands:
+          - mkdir -p repo/
+          - python code/recid_set.py >> repo/recid.txt
+      - name: cmsclient
+        environment: "cernopendata/cernopendata-client"
+        commands:
+          - sh code/run-client.sh
+      - name: PFCadProduction
+        environment: "gitlab-registry.cern.ch/cms-cloud/cmssw-docker/cmssw_10_6_30-slc7_amd64_gcc700"
+        commands:
+          - mkdir -p results/production_output/
+          - sh code/run.sh
+outputs:
+  directories:
+    - results
+    - repo
