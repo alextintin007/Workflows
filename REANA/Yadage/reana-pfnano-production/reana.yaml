@@ -1,12 +1,11 @@
 version: 0.6.0
 inputs:
   directories:
-    - data
-    - code
     - workflow
 workflow:
   type: yadage
-  file: workflow/yadage/workflow.yaml
+  file: workflow/workflow.yaml
 outputs:
-  directories:
-    - results
+  files:
+   - rdf-plot/nPFCands.png
+   - coffea-plot/PF_n.png

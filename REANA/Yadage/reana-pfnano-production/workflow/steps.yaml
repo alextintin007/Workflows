@@ -1,0 +1,31 @@
+coffea-plot:
+  process:
+    process_type: interpolated-script-cmd
+    interpreter: bash
+    script: |
+      python /code/coffea_plot.py
+  environment:
+    environment_type: docker-encapsulated
+    image: alextintin007/coffea-base
+    imagetag: 1.0.1
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      coffea: 'coffea_plot'
+
+rdf-plot:
+  process:
+    process_type: interpolated-script-cmd
+    interpreter: bash
+    script: |
+      python $REANA_WORKSPACE/code/rdf_plot.py
+      ls
+  environment:
+    environment_type: docker-encapsulated
+    image: rootproject/root
+    imagetag: 6.28.00-ubuntu22.04
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      rdf: 'rdf_plot'
+
