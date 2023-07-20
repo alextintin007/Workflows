@@ -1,0 +1,16 @@
+stages:
+  - name: coffea-plot
+    dependencies: [init]
+    scheduler:
+      scheduler_type: singlestep-stage
+      parameters:
+        coffea_outputs: "{workdir}"
+      step: { $ref: "workflow/yadage/steps.yaml#/coffea-plot" }
+
+  - name: rdf-plot
+    dependencies: [coffea-plot]
+    scheduler:
+      scheduler_type: singlestep-stage
+      parameters:
+        rdf_outputs: "{workdir}"
+      step: { $ref: "workflow/yadage/steps.yaml#/rdf-plot" }
