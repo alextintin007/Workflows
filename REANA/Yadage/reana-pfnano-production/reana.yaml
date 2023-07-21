@@ -7,5 +7,4 @@ workflow:
   file: workflow/workflow.yaml
 outputs:
   files:
-   - rdf-plot/nPFCands.png
    - coffea-plot/PF_n.png

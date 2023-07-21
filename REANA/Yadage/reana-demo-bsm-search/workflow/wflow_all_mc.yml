@@ -15,11 +15,11 @@ stages:
       scatter:
         method: zip
         parameters: [mcname,mcweight]
-  - name: merge
-    dependencies: [run_mc]
-    scheduler:
-      scheduler_type: singlestep-stage
-      parameters:
-        inputs: {stages: 'run_mc[*].mergeallvars', output: mergedfile}
-        mergedfile: '{workdir}/merged.root'
-      step: {$ref: steps.yml#/merge_root}
+  # - name: merge
+  #   dependencies: [run_mc]
+  #   scheduler:
+  #     scheduler_type: singlestep-stage
+  #     parameters:
+  #       inputs: {stages: 'run_mc[*].mergeallvars', output: mergedfile}
+  #       mergedfile: '{workdir}/merged.root'
+  #     step: {$ref: steps.yml#/merge_root}

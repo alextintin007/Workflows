@@ -3,15 +3,16 @@ coffea-plot:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
-      python /code/coffea_plot.py
+      echo {outputfile}
+      python /code/coffea_plot.py {outputfile}
   environment:
     environment_type: docker-encapsulated
     image: alextintin007/coffea-base
-    imagetag: 1.0.1
+    imagetag: 1.0.4
   publisher:
     publisher_type: 'frompar-pub'
     outputmap:
-      coffea: 'coffea_plot'
+      outputfile: 'outputfile'
 
 rdf-plot:
   process:
@@ -28,4 +29,3 @@ rdf-plot:
     publisher_type: 'frompar-pub'
     outputmap:
       rdf: 'rdf_plot'
-
