@@ -3,29 +3,29 @@ coffea-plot:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
-      echo {outputfile}
-      python /code/coffea_plot.py {outputfile}
+      python /code/coffea_plot.py {outputfile1} {outputfile2}
   environment:
     environment_type: docker-encapsulated
     image: alextintin007/coffea-base
-    imagetag: 1.0.4
+    imagetag: 1.0.14
   publisher:
     publisher_type: 'frompar-pub'
     outputmap:
-      outputfile: 'outputfile'
+      PF_pt: 'outputfile1'
+      PF_n: 'outputfile2'
 
 rdf-plot:
   process:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
-      python $REANA_WORKSPACE/code/rdf_plot.py
-      ls
+      python /code/rdf_plot.py {outputfile1} {outputfile2}
   environment:
     environment_type: docker-encapsulated
-    image: rootproject/root
-    imagetag: 6.28.00-ubuntu22.04
+    image: alextintin007/root
+    imagetag: 1.0.5
   publisher:
     publisher_type: 'frompar-pub'
     outputmap:
-      rdf: 'rdf_plot'
+      nPFCands: 'outputfile1'
+      nPFCands_pt: 'outputfile2'

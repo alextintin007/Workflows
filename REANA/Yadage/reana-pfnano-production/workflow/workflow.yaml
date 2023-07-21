@@ -3,11 +3,13 @@ stages:
     scheduler:
       scheduler_type: singlestep-stage
       parameters:
-        outputfile: '{workdir}/PF_n.png'
+        outputfile1: '{workdir}/PF_pt.png'
+        outputfile2: '{workdir}/PF_n.png'
       step: {$ref: workflow/steps.yaml#/coffea-plot}
   - name: rdf-plot
     scheduler:
       scheduler_type: singlestep-stage
       parameters:
-        rdf_plot: '{workdir}/nPFCands.png'
+        outputfile1: '{workdir}/nPFCands.png'
+        outputfile2: '{workdir}/nPFCands_pt.png'
       step: {$ref: workflow/steps.yaml#/rdf-plot}

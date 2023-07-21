@@ -1,5 +1,5 @@
 # Start from the ROOT6 base image:
-FROM coffeateam/coffea-base:0.7.21-fastjet-3.4.0.1
+FROM rootproject/root:6.28.00-ubuntu22.04
 
 # Mount our code:
 ADD code /code
