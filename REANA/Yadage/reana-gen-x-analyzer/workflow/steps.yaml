@@ -3,8 +3,8 @@ cernopendata:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
-      echo "working"
-      cernopendata-client get-file-locations --recid {recid} --protocol xrootd > {outputfile}
+      echo {recid}
+      # cernopendata-client get-file-locations --recid {recid} --protocol xrootd > {outputfile}
   environment:
     environment_type: docker-encapsulated
     image: cernopendata/cernopendata-client

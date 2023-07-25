@@ -3,5 +3,5 @@ stages:
     scheduler:
       scheduler_type: singlestep-stage
       parameters:
-        recid: {$ref: code/recid.txt}
+        recid: [24119, 24120]
       workflow: {$ref: workflow/rungxa.yaml}
