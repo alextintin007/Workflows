@@ -1,0 +1,34 @@
+cernopendata:
+  process:
+    process_type: interpolated-script-cmd
+    interpreter: bash
+    script: |
+      echo "working"
+      cernopendata-client get-file-locations --recid {recid} --protocol xrootd > {outputfile}
+  environment:
+    environment_type: docker-encapsulated
+    image: cernopendata/cernopendata-client
+    imagetag: 0.3.0
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      outputfile: 'outputfile'
+
+poet:
+  process:
+    process_type: interpolated-script-cmd
+    interpreter: bash
+    script: |
+      source /opt/cms/entrypoint.sh
+      git clone -b odws2023 https://github.com/cms-opendata-analyses/PhysObjectExtractorTool.git
+      cd PhysObjectExtractorTool/PhysObjectExtractor
+      scram b
+      # echo {inputFile}
+  environment:
+    environment_type: docker-encapsulated
+    image: cmsopendata/cmssw_7_6_7-slc6_amd64_gcc493
+    imagetag: latest
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      outputfile: 'outputfile'

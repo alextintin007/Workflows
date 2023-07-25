@@ -8,7 +8,6 @@ generate:
       ls
       echo "here"
       python /code/generantuple.py {type} {nevents} {outputfile}
-      
   environment:
     environment_type: docker-encapsulated
     image: reanahub/reana-demo-bsm-search
@@ -18,21 +17,21 @@ generate:
     outputmap:
       outputfile: 'outputfile'
 
-# select:
-#   process:
-#     process_type: interpolated-script-cmd
-#     interpreter: bash
-#     script: |
-#       source /usr/local/bin/thisroot.sh
-#       python /code/select.py {inputfile} {outputfile} {region} nominal
-#   environment:
-#     environment_type: docker-encapsulated
-#     image: reanahub/reana-demo-bsm-search
-#     imagetag: 1.0.0
-#   publisher:
-#     publisher_type: 'frompar-pub'
-#     outputmap:
-#       outputfile: 'outputfile'
+select:
+  process:
+    process_type: interpolated-script-cmd
+    interpreter: bash
+    script: |
+      source /usr/local/bin/thisroot.sh
+      python /code/select.py {inputfile} {outputfile} {region} nominal
+  environment:
+    environment_type: docker-encapsulated
+    image: reanahub/reana-demo-bsm-search
+    imagetag: 1.0.0
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      outputfile: 'outputfile'
 
 # select_mc:
 #   process:

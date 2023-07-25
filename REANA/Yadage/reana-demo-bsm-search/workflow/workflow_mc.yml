@@ -12,18 +12,18 @@ stages:
         method: zip
         parameters: [nevents]
 
-  # - name: merge
-  #   dependencies: [read]
-  #   scheduler:
-  #     scheduler_type: multistep-stage
-  #     batchsize: 2
-  #     parameters:
-  #       inputs: {stages: 'read', output: outputfile}
-  #       mergedfile: '{workdir}/merged.root'
-  #     step: {$ref: steps.yml#/merge_root}
-  #     scatter:
-  #       method: zip
-  #       parameters: [inputs]
+  - name: merge
+    dependencies: [read]
+    scheduler:
+      scheduler_type: multistep-stage
+      batchsize: 2
+      parameters:
+        inputs: {stages: 'read', output: outputfile}
+        mergedfile: '{workdir}/merged.root'
+      step: {$ref: steps.yml#/merge_root}
+      scatter:
+        method: zip
+        parameters: [inputs]
 
   # - name: select_signal_shapevars
   #   dependencies: [merge]

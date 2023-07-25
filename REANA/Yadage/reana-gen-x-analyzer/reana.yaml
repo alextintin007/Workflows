@@ -1,0 +1,10 @@
+version: 0.6.0
+inputs:
+  directories:
+  - workflow
+workflow:
+  type: yadage
+  file: workflow/workflow.yaml
+outputs:
+  files:
+  - runpoet/myoutput.root
