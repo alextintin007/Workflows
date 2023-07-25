@@ -13,7 +13,7 @@ stages:
       scheduler_type: multistep-stage
       parameters:
         inputFile: {stages: 'metadata', output: outputfile}
-        outputfile: '{workdir}/myoutput.root'
+        outputfile: '{workdir}/logfile.log'
       step: {$ref: steps.yaml#/poet}
       scatter:
         method: zip

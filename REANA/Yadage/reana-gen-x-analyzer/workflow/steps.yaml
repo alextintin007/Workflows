@@ -13,17 +13,22 @@ cernopendata:
     publisher_type: 'frompar-pub'
     outputmap:
       outputfile: 'outputfile'
-
 poet:
   process:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
       source /opt/cms/entrypoint.sh
-      git clone -b odws2023 https://github.com/cms-opendata-analyses/PhysObjectExtractorTool.git
-      cd PhysObjectExtractorTool/PhysObjectExtractor
-      scram b
-      # echo {inputFile}
+      echo "Setting up CMSSW_7_6_7"
+      source /cvmfs/cms.cern.ch/cmsset_default.sh
+      scramv1 project CMSSW CMSSW_7_6_7
+      cmsrel CMSSW_7_6_7
+      cd CMSSW_7_6_7/src
+      cmsenv
+      echo "CMSSW should now be available."
+      wget https://raw.githubusercontent.com/cms-sw/genproductions/master/Utilities/calculateXSectionAndFilterEfficiency/genXsec_cfg.py -O ana.py
+      cmsRun ana.py inputFiles="file:root://eospublic.cern.ch//eos/opendata/cms/mc/RunIIFall15MiniAODv2/ADDGravToGG_MS-3000_NED-2_KK-1_M-1000To2000_13TeV-sherpa/MINIAODSIM/PU25nsData2015v1_76X_mcRun2_asymptotic_v12-v1/50000/3AE9F9CF-09B8-E511-AB84-00237DF29430.root" maxEvents=-1 > {outputfile} 2>&1
+
   environment:
     environment_type: docker-encapsulated
     image: cmsopendata/cmssw_7_6_7-slc6_amd64_gcc493

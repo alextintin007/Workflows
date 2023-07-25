@@ -100,7 +100,7 @@ spec:
   # Get the metadata of the dataset
   # Accidentally showing three different ways of passing parameters/files btw the steps
   # - the full list of files: write it to a file on the common disk mounted on /mnt/vol
-  # - the type of data: write it to the step's ouput parameter "{{tasks.get-metadata.outputs.parameters.dataType}}#   (through a temporary file /tmp/type.txt)
+  # - the type of data: write it to the step's output parameter "{{tasks.get-metadata.outputs.parameters.dataType}}#   (through a temporary file /tmp/type.txt)
   # - the total number of files which is the stdout output of this step and goes to {{tasks.get-metadata.outputs.result}}
   # 
   - name: get-metadata-template

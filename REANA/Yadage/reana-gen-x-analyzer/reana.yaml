@@ -7,4 +7,4 @@ workflow:
   file: workflow/workflow.yaml
 outputs:
   files:
-  - runpoet/myoutput.root
+  - runpoet/logfile.log
