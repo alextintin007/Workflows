@@ -2,11 +2,15 @@ stages:
   - name: metadata
     dependencies: [init]
     scheduler:
-      scheduler_type: singlestep-stage
+      scheduler_type: multistep-stage
       parameters:
         recid: {stages: 'init', output: recid, unwrap: true}
         outputfile: '{workdir}/files.txt'
       step: {$ref: steps.yaml#/cernopendata}
+      scatter:
+        method: zip
+        parameters: [recid]
+      
   - name: runpoet
     dependencies: [metadata]
     scheduler:

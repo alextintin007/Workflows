@@ -1,0 +1,7 @@
+stages:
+  - name: wflow_all_gxa
+    scheduler:
+      scheduler_type: singlestep-stage
+      parameters:
+        recid: {$ref: code/recid.txt}
+      workflow: {$ref: workflow/rungxa.yaml}

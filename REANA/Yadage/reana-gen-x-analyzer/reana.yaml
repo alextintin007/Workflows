@@ -4,7 +4,7 @@ inputs:
   - workflow
 workflow:
   type: yadage
-  file: workflow/workflow.yaml
+  file: workflow/genxanalyzer.yaml
 outputs:
   files:
-  - runpoet/logfile.log
+  - runpoet_0/logfile.log

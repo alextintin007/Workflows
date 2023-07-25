@@ -1,7 +1,0 @@
-stages:
-  - name: all_steps
-    scheduler:
-      scheduler_type: singlestep-stage
-      parameters:
-        recid: [24119]
-      workflow: {$ref: workflow/runpoet.yaml}
