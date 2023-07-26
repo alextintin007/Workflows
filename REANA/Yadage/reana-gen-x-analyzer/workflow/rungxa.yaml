@@ -5,20 +5,32 @@ stages:
       scheduler_type: multistep-stage
       parameters:
         recid: {stages: 'init', output: recid, unwrap: true}
-        outputfile: '{workdir}/files.txt'
+        outputfile: '{workdir}/file.txt'
       step: {$ref: steps.yaml#/cernopendata}
       scatter:
         method: zip
         parameters: [recid]
       
-  - name: runpoet
+  - name: cmssw
     dependencies: [metadata]
     scheduler:
       scheduler_type: multistep-stage
       parameters:
         inputFile: {stages: 'metadata', output: outputfile}
-        outputfile: '{workdir}/logfile.log'
-      step: {$ref: steps.yaml#/poet}
+        outputfile: '{workdir}/xsec.log'
+      step: {$ref: steps.yaml#/cmsRun}
+      scatter:
+        method: zip
+        parameters: [inputFile]
+
+  - name: numpy
+    dependencies: [cmssw]
+    scheduler:
+      scheduler_type: multistep-stage
+      parameters:
+        inputFile: {stages: 'cmssw', output: outputfile}
+        outputfile: '{workdir}/xsec.npy'
+      step: {$ref: steps.yaml#/test}
       scatter:
         method: zip
         parameters: [inputFile]

@@ -16,7 +16,7 @@ cernopendata:
     outputmap:
       outputfile: 'outputfile'
 
-poet:
+cmsRun:
   process:
     process_type: interpolated-script-cmd
     interpreter: bash
@@ -30,12 +30,30 @@ poet:
       cmsenv
       echo "CMSSW should now be available."
       wget https://raw.githubusercontent.com/cms-sw/genproductions/master/Utilities/calculateXSectionAndFilterEfficiency/genXsec_cfg.py -O ana.py
-  
       cmsRun ana.py inputFiles="file:$(<{inputFile})" maxEvents=-1 > {outputfile} 2>&1
   environment:
     environment_type: docker-encapsulated
     image: cmsopendata/cmssw_7_6_7-slc6_amd64_gcc493
     imagetag: latest
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      outputfile: 'outputfile'
+
+test:
+  process:
+    process_type: interpolated-script-cmd
+    interpreter: bash
+    script: |
+      cp {inputFile} .
+      ls
+      wget https://raw.githubusercontent.com/Ari-mu-l/genproductions/master/Utilities/calculateXSectionAndFilterEfficiency/output_to_numpy.py -O output_to_numpy.py
+      ls
+      python output_to_numpy.py
+  environment:
+    environment_type: docker-encapsulated
+    image: alpine
+    imagetag: 3.18.2
   publisher:
     publisher_type: 'frompar-pub'
     outputmap:
