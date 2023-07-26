@@ -1,3 +1,18 @@
+initialise:
+  process:
+    process_type: interpolated-script-cmd
+    interpreter: bash
+    script: |
+      
+      cp {output_file}
+  publisher:
+    publisher_type: fromyaml-pub
+    yamlfile: 'files.yaml'
+  environment:
+    environment_type: docker-encapsulated
+    image: alintulu/cmssw
+    imagetag: 10_6_12-comparison-plots
+
 cernopendata:
   process:
     process_type: interpolated-script-cmd
@@ -45,11 +60,13 @@ test:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
-      cp {inputFile} .
+      # cp {inputFile} .
+      # ls
+      # wget https://raw.githubusercontent.com/Ari-mu-l/genproductions/master/Utilities/calculateXSectionAndFilterEfficiency/output_to_numpy.py -O output_to_numpy.py
+      # ls
+      # python output_to_numpy.py
+      # echo "import numpy" > {outputfile}
       ls
-      wget https://raw.githubusercontent.com/Ari-mu-l/genproductions/master/Utilities/calculateXSectionAndFilterEfficiency/output_to_numpy.py -O output_to_numpy.py
-      ls
-      python output_to_numpy.py
   environment:
     environment_type: docker-encapsulated
     image: alpine

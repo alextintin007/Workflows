@@ -1,7 +1,15 @@
 stages:
-  - name: wflow_all_gxa
+  - name: initialise
     scheduler:
       scheduler_type: singlestep-stage
       parameters:
-        recid: [15200]
+        output_file: '{workdir}/files.yaml'
+      step: {$ref: workflow/steps.yaml#/initialise}
+
+  - name: wflow_all_gxa
+    dependencies: [initialise]
+    scheduler:
+      scheduler_type: singlestep-stage
+      parameters:
+        input_file_mc: {stages: 'initialise', output: mc_datasets, unwrap: true}
       workflow: {$ref: workflow/rungxa.yaml}
