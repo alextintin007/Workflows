@@ -1,0 +1,11 @@
+version: 0.6.0
+inputs:
+  files:
+  - workflow.yaml
+  - steps.yaml
+  - input_list.yaml
+  - rungxa.yaml
+  - genxanalyzer.yaml
+workflow:
+  type: yadage
+  file: genxanalyzer.yaml

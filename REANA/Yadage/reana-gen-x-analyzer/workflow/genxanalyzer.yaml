@@ -3,13 +3,42 @@ stages:
     scheduler:
       scheduler_type: singlestep-stage
       parameters:
-        output_file: '{workdir}/files.yaml'
-      step: {$ref: workflow/steps.yaml#/initialise}
+        input_file: "$REANA_WORKSPACE/input_list.yaml"
+        output_file: '{workdir}/input_list.yaml'
+      step: {$ref: steps.yaml#/initialise}
 
-  - name: wflow_all_gxa
+  - name: metadata
     dependencies: [initialise]
     scheduler:
-      scheduler_type: singlestep-stage
+      scheduler_type: multistep-stage
       parameters:
-        input_file_mc: {stages: 'initialise', output: mc_datasets, unwrap: true}
-      workflow: {$ref: workflow/rungxa.yaml}
+        recid: { stages: "initialise", output: "input_list", unwrap: true }
+        outputfile: '{workdir}/outputfile.txt'
+      step: {$ref: steps.yaml#/cernopendata}
+      scatter:
+        method: zip
+        parameters: [recid]
+
+  - name: cmssw
+    dependencies: [metadata]
+    scheduler:
+      scheduler_type: multistep-stage
+      parameters:
+        inputFile: {stages: 'metadata', output: outputfile}
+        outputfile: '{workdir}/xsec.log'
+      step: {$ref: steps.yaml#/cmsRun}
+      scatter:
+        method: zip
+        parameters: [inputFile]
+
+  - name: numpy
+    dependencies: [cmssw]
+    scheduler:
+      scheduler_type: multistep-stage
+      parameters:
+        inputFile: {stages: 'cmssw', output: outputfile}
+        outputfile: '{workdir}/xsec.npy'
+      step: {$ref: steps.yaml#/test}
+      scatter:
+        method: zip
+        parameters: [inputFile]
