@@ -3,6 +3,7 @@ initialise:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
+      set -e
       cp {input_file} {output_file}
   publisher:
     publisher_type: fromyaml-pub
@@ -17,6 +18,7 @@ cernopendata:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
+      set -e
       echo {recid}
       cernopendata-client get-file-locations --recid {recid} --protocol xrootd > output.txt
       sed -n '1p' output.txt > {outputfile}
@@ -35,6 +37,7 @@ cmsRun:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
+      set -e
       source /opt/cms/entrypoint.sh
       echo "Setting up CMSSW_7_6_7"
       source /cvmfs/cms.cern.ch/cmsset_default.sh
@@ -45,6 +48,7 @@ cmsRun:
       echo "CMSSW should now be available."
       wget https://raw.githubusercontent.com/cms-sw/genproductions/master/Utilities/calculateXSectionAndFilterEfficiency/genXsec_cfg.py -O ana.py
       cmsRun ana.py inputFiles="file:$(<{inputFile})" maxEvents=-1 > {outputfile} 2>&1
+      cmsRun ana.py inputFiles="file:$(<{inputFile})" maxEvents=-1 > xsec.log 2>&1
   environment:
     environment_type: docker-encapsulated
     image: cmsopendata/cmssw_7_6_7-slc6_amd64_gcc493
@@ -59,18 +63,24 @@ test:
     process_type: interpolated-script-cmd
     interpreter: bash
     script: |
-      sudo cp {inputFile} .
-      ls
+      set -e
+      source /opt/cms/entrypoint.sh
+      echo "Setting up CMSSW_7_6_7"
+      source /cvmfs/cms.cern.ch/cmsset_default.sh
+      scramv1 project CMSSW CMSSW_7_6_7
+      cmsrel CMSSW_7_6_7
+      cd CMSSW_7_6_7/src
+      cmsenv
+      echo "CMSSW should now be available."
+      cp -f {inputFile} ./
       wget https://raw.githubusercontent.com/Ari-mu-l/genproductions/master/Utilities/calculateXSectionAndFilterEfficiency/output_to_numpy.py -O output_to_numpy.py
-      echo "here"
-      ls
       python output_to_numpy.py
-      echo "here"
       ls
+      cp xsec.npy {outputfile}
   environment:
     environment_type: docker-encapsulated
-    image: ubuntu
-    imagetag: '22.04'
+    image: cmsopendata/cmssw_7_6_7-slc6_amd64_gcc493
+    imagetag: latest
   publisher:
     publisher_type: 'frompar-pub'
     outputmap:

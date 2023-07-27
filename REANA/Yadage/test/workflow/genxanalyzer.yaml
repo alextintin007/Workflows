@@ -1,0 +1,17 @@
+stages:
+  - name: cmssw
+    scheduler:
+      scheduler_type: singlestep-stage
+      parameters:
+        outputfile: '{workdir}/xsec.log'
+      step: {$ref: steps.yaml#/cmsRun}
+
+  - name: numpy
+    dependencies: [cmssw]
+    scheduler:
+      scheduler_type: singlestep-stage
+      parameters:
+        inputFile: {stages: 'cmssw', output: outputfile}
+        outputfile: '{workdir}/xsec.npy'
+        output_path: '{workdir}'
+      step: {$ref: steps.yaml#/test}

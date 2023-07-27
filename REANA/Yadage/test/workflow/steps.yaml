@@ -1,0 +1,40 @@
+cmsRun:
+  process:
+    process_type: interpolated-script-cmd
+    interpreter: bash
+    script: |
+      echo "Setting up CMSSW_7_6_7" > {outputfile}
+  environment:
+    environment_type: docker-encapsulated
+    image: ubuntu
+    imagetag: "22.04"
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      outputfile: 'outputfile'
+
+test:
+  process:
+    process_type: interpolated-script-cmd
+    interpreter: bash
+    script: |
+      echo "Setting up CMSSW_10_6_30"
+      source /cvmfs/cms.cern.ch/cmsset_default.sh
+      scramv1 project CMSSW CMSSW_10_6_30
+      cmsrel CMSSW_10_6_30
+      cd CMSSW_10_6_30/src
+      cmsenv
+      echo "CMSSW should now be available."
+      cp -f {inputFile} ./
+      wget https://raw.githubusercontent.com/Ari-mu-l/genproductions/master/Utilities/calculateXSectionAndFilterEfficiency/output_to_numpy.py -O output_to_numpy.py
+      python output_to_numpy.py
+      echo "here"
+      ls
+  environment:
+    environment_type: docker-encapsulated
+    image: cmsopendata/cmssw_10_6_30-slc7_amd64_gcc700
+    imagetag: latest
+  publisher:
+    publisher_type: 'frompar-pub'
+    outputmap:
+      outputfile: 'outputfile'
